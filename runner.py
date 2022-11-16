@@ -3,6 +3,9 @@ from datetime import datetime, timezone
 from time import sleep
 from bmp280 import BMP280
 from smbus import SMBus
+from azure.iot.device.aio import IoTHubDeviceClient
+
+
 
 # Initialize the dht11 sensor connected to GPIO17 pin on the raspberry
 dht_11 = adafruit_dht.DHT11(board.D17)
@@ -34,6 +37,9 @@ def read_voc():
 		total_value+=1
 	return total_value
 
+Environment=IOTHUB_DEVICE_CONNECTION_STRING="HostName=IAQ.azure-devices.net;DeviceId=RaspberryPi;SharedAccessKey=3EgDUiAi/4PrOWGpO7N2S8fVSTYuxRfPfftJHnRrklo="
+
+conn_str = os.getenv("IOTHUB_DEVICE_CONNECTION_STRING")
 # Use global variable to update sleep time between measurements
 # Currently measurement and post time is the same, could be developed further to support buffering measurements with smaller interval than posting
 SLEEP_TIME = 5
@@ -53,6 +59,9 @@ async def main():
         if proc.name() == 'libgpiod_pulsein' or proc.name() == 'libgpiod_pulsei':
             proc.kill()
 
+    iot_device_client = IoTHubDeviceClient.create_from_connection_string(conn_str)
+
+    await iot_device_client.connect()
     # Infinite loop to keep taking measurements as long as device is powered on and connected to cloud
     while True:
         try:
@@ -66,12 +75,14 @@ async def main():
             values['metadata'] = {"evetType": "measurement"}
             
             # Dump the measurement values into dumpfile.json
-            print(f"Dumping these measurements{values} into dumpfile.json")
-            print("\n")
+           # print(f"Dumping these measurements{values} into dumpfile.json")
+            # print("\n")
 
-            with open("dumpfile.json", "a") as fp:
-                json.dump(values, fp, indent=4)
-            fp.close()
+            # with open("dumpfile.json", "a") as fp:
+               # json.dump(values, fp, indent=4)
+           # fp.close()
+
+            await iot_device_client.send_message(json.dumps(values))
 
         # Skip over RuntimeErrors and continue to try to run the while loop
         except RuntimeError as error:
@@ -82,6 +93,7 @@ async def main():
         # If other errors occur, device to shutdown
         except Exception as error:
             dht_11.exit()
+            await iot_device_client.shutdown()
             raise error
 
         sleep(SLEEP_TIME)
