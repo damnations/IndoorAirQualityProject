@@ -63,7 +63,7 @@ async def main():
     while True:
         try:
             # Read measurement values into a dictionary
-            values=mh_z19.read(serial_console_untouched=True)
+            values = mh_z19.read(serial_console_untouched=True)
             values['temp'] = dht_11.temperature
             values['humidity'] = dht_11.humidity
             values['pressure'] = bmp280.get_pressure()
