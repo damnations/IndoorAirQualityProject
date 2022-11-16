@@ -1,7 +1,7 @@
 cd ~
 sudo apt update
-sudo apt upgrade
-sudo apt install python3-pip git
+sudo apt upgrade -y
+sudo apt install -y python3-pip git
 sudo pip3 install --upgrade setuptools
 git clone https://github.com/UedaTakeyuki/mh-z19.git
 cd mh-z19
