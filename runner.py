@@ -5,8 +5,6 @@ from bmp280 import BMP280
 from smbus import SMBus
 from azure.iot.device.aio import IoTHubDeviceClient
 
-
-
 # Initialize the dht11 sensor connected to GPIO17 pin on the raspberry
 dht_11 = adafruit_dht.DHT11(board.D17)
 
@@ -37,9 +35,10 @@ def read_voc():
 		total_value+=1
 	return total_value
 
-Environment=IOTHUB_DEVICE_CONNECTION_STRING="HostName=IAQ.azure-devices.net;DeviceId=RaspberryPi;SharedAccessKey=3EgDUiAi/4PrOWGpO7N2S8fVSTYuxRfPfftJHnRrklo="
-
+# Set connection string as an environment variable beforehand
+# export IOTHUB_DEVICE_CONNECTION_STRING={iothub connection string}
 conn_str = os.getenv("IOTHUB_DEVICE_CONNECTION_STRING")
+
 # Use global variable to update sleep time between measurements
 # Currently measurement and post time is the same, could be developed further to support buffering measurements with smaller interval than posting
 SLEEP_TIME = 5
@@ -49,19 +48,17 @@ async def main():
     # Use global variable, so it can be updated by device twin
     global SLEEP_TIME
 
-    # Create a dumpfile.json if it doesn't already exist, note this is just for testing purposes
-    if (os.path.exists("dumpfile.json") == False):
-        f = open("dumpfile.json", "w")
-        f.close()
-
     # Check if a libgpiod process is running. If yes, kill it!
     for proc in psutil.process_iter():
         if proc.name() == 'libgpiod_pulsein' or proc.name() == 'libgpiod_pulsei':
             proc.kill()
 
+    # Create an IoTHubDeviceClient object from connection string
     iot_device_client = IoTHubDeviceClient.create_from_connection_string(conn_str)
-
+    
+    # Wait for the device to connect to Azure IoTHub
     await iot_device_client.connect()
+
     # Infinite loop to keep taking measurements as long as device is powered on and connected to cloud
     while True:
         try:
@@ -74,14 +71,7 @@ async def main():
             values['time(UTC)'] = str(datetime.now(timezone.utc)) # Datetime is in UTC
             values['metadata'] = {"evetType": "measurement"}
             
-            # Dump the measurement values into dumpfile.json
-           # print(f"Dumping these measurements{values} into dumpfile.json")
-            # print("\n")
-
-            # with open("dumpfile.json", "a") as fp:
-               # json.dump(values, fp, indent=4)
-           # fp.close()
-
+            # Send measurement vales to Azure IoTHub
             await iot_device_client.send_message(json.dumps(values))
 
         # Skip over RuntimeErrors and continue to try to run the while loop
