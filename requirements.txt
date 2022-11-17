@@ -2,4 +2,3 @@ adafruit-circuitpython-bmp280
 adafruit-circuitpython-dht
 azure-iot-device
 bmp280
-board
