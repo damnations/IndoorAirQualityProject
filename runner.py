@@ -84,7 +84,7 @@ async def main():
         except Exception as error:
             dht_11.exit()
             await iot_device_client.shutdown()
-            print("\n\033[1mDevice no longer sending measurements values to cloud\033[0m\n")
+            print("\n\033[1mDevice no longer sending measurements values to cloud!!!\nTry restarting the program\033[0m\n")
             raise error
 
         sleep(SLEEP_TIME)
