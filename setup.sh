@@ -2,7 +2,7 @@
 cd $HOME 
 sudo apt update
 sudo apt upgrade -y
-sudo apt autoremove -y
+sudo apt autoremove -yYy
 git clone https://github.com/UedaTakeyuki/mh-z19.git
 cd mh-z19
 sudo pip3 install mh_z19 pondslider incremental_counter error_counter
@@ -17,7 +17,5 @@ fi
 sudo pip3 install --upgrade adafruit-python-shell
 wget https://raw.githubusercontent.com/adafruit/Raspberry-Pi-Installer-Scripts/master/raspi-blinka.py
 sudo raspi-config nonint do_blanking 1
-sudo sed -i "s/do_serial 0/do_serial 2/
-             s/sudo apt-get install -y python3-pip/sudo apt install -y python3-pip git chromium-browser unclutter
-             s/apt-get/apt/g" $HOME/raspi-blinka.py
+sudo sed -i "s/do_serial 0/do_serial 2/;s/sudo apt-get install -y python3-pip/sudo apt install -y python3-pip git chromium-browser unclutter;s/apt-get/apt/g" $HOME/raspi-blinka.py
 sudo python3 raspi-blinka.py
