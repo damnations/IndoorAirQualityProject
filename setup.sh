@@ -2,7 +2,7 @@
 cd $HOME 
 sudo apt update
 sudo apt upgrade -y
-sudo apt autoremove -yYy
+sudo apt autoremove -y
 git clone https://github.com/UedaTakeyuki/mh-z19.git
 cd mh-z19
 sudo pip3 install mh_z19 pondslider incremental_counter error_counter
