@@ -35,8 +35,8 @@ def read_voc():
 		total_value+=1
 	return total_value
 
-# Set connection string as an environment variable beforehand
-# export IOTHUB_DEVICE_CONNECTION_STRING={iothub connection string}
+# Set connection string as an environment variable beforehand inside /etc/environment
+# IOTHUB_DEVICE_CONNECTION_STRING={iothub connection string}
 conn_str = os.getenv("IOTHUB_DEVICE_CONNECTION_STRING")
 
 # Use global variable to update sleep time between measurements
