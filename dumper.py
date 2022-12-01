@@ -4,8 +4,8 @@ from time import sleep
 from bmp280 import BMP280
 from smbus import SMBus
 
-# Initialize the dht11 sensor connected to GPIO17 pin on the raspberry
-dht_11 = adafruit_dht.DHT11(board.D17)
+# Initialize the dht11 sensor connected to GPIO6 pin on the raspberry
+dht_11 = adafruit_dht.DHT11(board.D6)
 
 # Initialize the bmp280 sensor using I2C communication, note that I2C has to be enabled on your device
 bus = SMBus(1)
