@@ -14,7 +14,7 @@ FILE=$HOME/raspi-blinka.py
 if [[ -f "$FILE" ]]; then
     rm raspi-blinka.py
 fi
-sudo pip3 install --upgrade adafruit-python-shell
+sudo pip3 install --upgrade adafruit-python-shell click
 wget https://raw.githubusercontent.com/adafruit/Raspberry-Pi-Installer-Scripts/master/raspi-blinka.py
 sudo raspi-config nonint do_blanking 1
 sudo sed -i "s/do_serial 0/do_serial 2/" $HOME/raspi-blinka.py
