@@ -13,7 +13,6 @@ GPIO.setup(27, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 # Set backlight GPIO configuration
 os.system("echo 27 >/sys/class/gpio/export")
-os.system("echo out >/sys/class/gpio/gpio27/direction")
 
 # 1 means backlight is off, 0 means backlight is on
 buttonOnOff = 0
@@ -37,13 +36,21 @@ while True:
     # GPIO27 as backlight control
     if (GPIO.input(27) == False):
         if (buttonOnOff == 0):
-            os.system("echo 1 >/sys/class/gpio/gpio27/value")
+            os.system("echo out >/sys/class/gpio/gpio27/direction")
             buttonOnOff = 1
+            print ("Setting Backlight Direction to Out")
+            time.sleep(0.5)
+
+        elif (buttonOnOff == 1 or buttonOnOff == 3):
+            os.system("echo 1 >/sys/class/gpio/gpio27/value")
+            buttonOnOff = 2
             print ("Backlight Off")
             time.sleep(0.5)
 
-        else:
+        elif (buttonOnOff == 2):
             os.system("echo 0 >/sys/class/gpio/gpio27/value")
-            buttonOnOff = 0
+            buttonOnOff = 3
             print ("Backlight On")
             time.sleep(0.5)
+
+    GPIO.cleanup()
