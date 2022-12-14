@@ -6,7 +6,7 @@ After=network.target
 Environment=IOTHUB_DEVICE_CONNECTION_STRING="HostName=IAQ.azure-devices.net;DeviceId=IndoorAirQualityProject;SharedAccessKey=85dnfhBSJEYE/4PrOWGpO7N2S8fVSTYuxRfPfftJHnRrjohn="
 Type=idle
 WorkingDirectory=/home/akhrs/IndoorAirQualityProject/
-ExecStart=/usr/bin/python3.9 /home/akhrs/IndoorAirQualityProject/runner.py
+ExecStart=/usr/bin/python3.9 /home/akhrs/IndoorAirQualityProject/runner.py > /home/akhrs/IndoorAirQualityProject/runnerLog.log 2>&1
 Restart=on-failure
 User=akhrs
 
