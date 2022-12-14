@@ -21,7 +21,7 @@ while True:
     # GPIO17 as shutdown button
     if (GPIO.input(17) == False):   
         print("SHUTDOWN!!!")  
-        os.system("sudo shutdown -h now") 
+        os.system("sudo halt") 
     
     # GPIO22 currently not functional
     if (GPIO.input(22) == False):  
