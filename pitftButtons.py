@@ -52,5 +52,3 @@ while True:
             buttonOnOff = 3
             print ("Backlight On")
             time.sleep(0.5)
-
-    GPIO.cleanup()
