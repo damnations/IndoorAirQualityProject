@@ -42,7 +42,7 @@ while True:
             print ("Backlight Off")
             time.sleep(0.5)
 
-        elif (buttonOnOff == 1):
+        else:
             os.system("echo 0 >/sys/class/gpio/gpio27/value")
             buttonOnOff = 0
             print ("Backlight On")
